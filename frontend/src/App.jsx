@@ -38,31 +38,31 @@ function App() {
         <aside className="sidebar">
           <div className="sidebar-header">
             <img src={logo} alt="Luna Rosa" className="sidebar-logo" />
-            <h3 className="sidebar-username">¡Hola, {nombreUsuario}!</h3>
+            {/* <h3 className="sidebar-username">¡Hola, {nombreUsuario}!</h3> */}
           </div>
           <nav className="sidebar-nav">
-            <NavLink to="/" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+            <NavLink to="/" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
               📦 Inventario
             </NavLink>
-            <NavLink to="/categorias" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+            <NavLink to="/categorias" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
               🏷️ Categorias
             </NavLink>
-            <NavLink to="/marcas" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+            <NavLink to="/marcas" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
               🏢 Marcas
             </NavLink>
             {isAdmin && (
-              <NavLink to="/usuarios" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+              <NavLink to="/usuarios" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
                 👥 Usuarios
               </NavLink>
             )}
           </nav>
           <div style={{ marginTop: 'auto', padding: '20px' }}>
-            <button className="btn-danger" style={{width: '100%'}} onClick={handleLogout}>
+            <button className="btn-danger" style={{ width: '100%' }} onClick={handleLogout}>
               Cerrar Sesión
             </button>
           </div>
         </aside>
-        
+
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Inventario />} />
