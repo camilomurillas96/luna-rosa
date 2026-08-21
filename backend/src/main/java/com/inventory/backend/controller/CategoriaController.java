@@ -26,14 +26,14 @@ public class CategoriaController {
     public CategoriaDTO obtener(@PathVariable Long id) { return categoriaService.obtenerPorId(id); }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public CategoriaDTO crear(@Valid @RequestBody CategoriaDTO dto) { return categoriaService.crear(dto); }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public CategoriaDTO actualizar(@PathVariable Long id, @Valid @RequestBody CategoriaDTO dto) { return categoriaService.actualizar(id, dto); }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public void eliminar(@PathVariable Long id) { categoriaService.eliminar(id); }
 }

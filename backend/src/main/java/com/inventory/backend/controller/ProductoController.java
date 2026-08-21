@@ -25,15 +25,15 @@ public class ProductoController {
     public ProductoDTO obtener(@PathVariable Long id) { return productoService.obtenerPorId(id); }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ProductoDTO crear(@Valid @RequestBody ProductoDTO dto) { return productoService.crearProducto(dto); }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ProductoDTO actualizar(@PathVariable Long id, @Valid @RequestBody ProductoDTO dto) { return productoService.actualizarProducto(id, dto); }
 
     @PostMapping("/{id}/movimientos")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public void registrarMovimiento(@PathVariable Long id, @Valid @RequestBody MovimientoRequest req, Principal principal) {
         String username = principal != null ? principal.getName() : null;
         productoService.registrarMovimiento(id, req.tipo(), req.cantidad(), req.motivo(), username);
