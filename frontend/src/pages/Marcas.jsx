@@ -76,15 +76,15 @@ export default function Marcas() {
       <table className="data-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>#</th>
             <th>Nombre</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {currentMarcas.map(marca => (
+          {currentMarcas.map((marca, index) => (
             <tr key={marca.id}>
-              <td>{marca.id}</td>
+              <td>{indexOfFirstItem + index + 1}</td>
               <td>{marca.nombre}</td>
               <td>
                 <button className="btn-action" onClick={() => abrirModal(marca)}>Editar</button>

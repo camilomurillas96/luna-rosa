@@ -120,7 +120,7 @@ export default function Inventario() {
       <table className="data-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>#</th>
             <th>Nombre del Producto</th>
             <th>Categoría</th>
             <th>Marca</th>
@@ -131,9 +131,9 @@ export default function Inventario() {
           </tr>
         </thead>
         <tbody>
-          {currentProductos.map(prod => (
+          {currentProductos.map((prod, index) => (
             <tr key={prod.id}>
-              <td>{prod.id}</td>
+              <td>{indexOfFirstItem + index + 1}</td>
               <td>{prod.nombre}</td>
               <td><span className="badge badge-info">{prod.categoriaNombre || 'Sin Categoría'}</span></td>
               <td><span className="badge badge-secondary">{prod.marcaNombre || 'Sin Marca'}</span></td>

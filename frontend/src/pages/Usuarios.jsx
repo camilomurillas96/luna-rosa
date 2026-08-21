@@ -88,7 +88,7 @@ export default function Usuarios() {
       <table className="data-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>#</th>
             <th>Nombre</th>
             <th>Usuario</th>
             <th>Rol</th>
@@ -97,9 +97,9 @@ export default function Usuarios() {
           </tr>
         </thead>
         <tbody>
-          {currentUsuarios.map(user => (
+          {currentUsuarios.map((user, index) => (
             <tr key={user.id}>
-              <td>{user.id}</td>
+              <td>{indexOfFirstItem + index + 1}</td>
               <td>{user.nombre}</td>
               <td>{user.username}</td>
               <td>{user.rol}</td>

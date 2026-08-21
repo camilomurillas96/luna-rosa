@@ -76,16 +76,16 @@ export default function Categorias() {
       <table className="data-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>#</th>
             <th>Nombre</th>
             <th>Descripción</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {currentCategorias.map(categoria => (
+          {currentCategorias.map((categoria, index) => (
             <tr key={categoria.id}>
-              <td>{categoria.id}</td>
+              <td>{indexOfFirstItem + index + 1}</td>
               <td>{categoria.nombre}</td>
               <td>{categoria.descripcion}</td>
               <td>
