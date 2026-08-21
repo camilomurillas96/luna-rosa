@@ -5,6 +5,7 @@ import Usuarios from './pages/Usuarios';
 import Categorias from './pages/Categorias';
 import Marcas from './pages/Marcas';
 import Login from './pages/Login';
+import logo from './assets/luna-rosa-.jpeg';
 import './App.css';
 
 function App() {
@@ -36,7 +37,8 @@ function App() {
       <div className="admin-layout">
         <aside className="sidebar">
           <div className="sidebar-header">
-            <h2>{nombreUsuario}</h2>
+            <img src={logo} alt="Luna Rosa" className="sidebar-logo" />
+            <h3 className="sidebar-username">¡Hola, {nombreUsuario}!</h3>
           </div>
           <nav className="sidebar-nav">
             <NavLink to="/" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>

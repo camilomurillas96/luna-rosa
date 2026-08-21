@@ -161,6 +161,36 @@ body {
   color: #333;
 }
 
+/* Logos */
+.login-logo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 20px;
+  display: block;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border: 4px solid #fff5f8;
+}
+
+.sidebar-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 10px;
+  display: block;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border: 3px solid #fff5f8;
+}
+
+.sidebar-username {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
 /* ---- ESTILOS DE LOGIN ---- */
 .login-container {
   display: flex;

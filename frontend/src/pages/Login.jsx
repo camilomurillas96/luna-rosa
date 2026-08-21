@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import logo from '../assets/luna-rosa-.jpeg';
 
 export default function Login({ onLogin }) {
   const [credenciales, setCredenciales] = useState({ username: '', password: '' });
@@ -43,6 +44,9 @@ export default function Login({ onLogin }) {
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
+        <div className="logo-container">
+          <img src={logo} alt="Luna Rosa" className="login-logo" />
+        </div>
         <h2>🔒 Acceso al Sistema</h2>
         {error && <p className="error-msg">{error}</p>}
         
