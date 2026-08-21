@@ -308,3 +308,90 @@ body {
   color: white;
   border-color: #3498db;
 }
+
+/* ---- RESPONSIVE DESIGN (MÓVILES) ---- */
+@media (max-width: 768px) {
+  /* Layout y Sidebar como Bottom Navigation */
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    flex-direction: row;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  }
+
+  .sidebar-header {
+    display: none; /* Ocultar título/logo en la barra inferior */
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    padding-top: 0;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .nav-item {
+    padding: 12px 5px;
+    border-left: none;
+    border-bottom: 4px solid transparent;
+    font-size: 0.85rem;
+    flex: 1;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .nav-item.active {
+    border-left-color: transparent;
+    border-bottom-color: #e74c3c;
+  }
+
+  /* Ajustar Contenido Principal */
+  .main-content {
+    width: 100%;
+    padding: 15px;
+    padding-bottom: 80px; /* Espacio para que el bottom nav no tape el contenido */
+  }
+
+  /* Tablas Responsivas */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Si la tabla no tiene contenedor extra, permitimos scroll en la misma tabla */
+  .data-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  /* Formularios y Modales */
+  .login-form,
+  .modal-content {
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+  }
+
+  .form-group input, 
+  .form-group select,
+  input, 
+  select, 
+  textarea {
+    font-size: 16px; /* Evita el auto-zoom en iOS */
+  }
+}
