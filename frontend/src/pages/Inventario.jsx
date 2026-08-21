@@ -10,6 +10,7 @@ export default function Inventario() {
   const [marcasList, setMarcasList] = useState([]);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [formData, setFormData] = useState({ id: null, nombre: '', categoriaId: '', marcaId: '', stock: '', precioCosto: '', precioVenta: '' });
+  const [verInactivos, setVerInactivos] = useState(false);
   
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -21,8 +22,9 @@ export default function Inventario() {
 
   const cargarDatos = async () => {
     try {
+      const endpoint = verInactivos ? '/productos/inactivos' : '/productos';
       const [prodData, catData, marcData] = await Promise.all([
-        apiFetch('/productos'),
+        apiFetch(endpoint),
         obtenerCategorias(),
         obtenerMarcas()
       ]);
@@ -36,12 +38,18 @@ export default function Inventario() {
 
   const cargarProductos = async () => {
     try {
-      const data = await apiFetch('/productos');
+      const endpoint = verInactivos ? '/productos/inactivos' : '/productos';
+      const data = await apiFetch(endpoint);
       setProductos(data);
     } catch (error) {
       console.error('No se pudieron cargar los productos', error);
     }
   };
+
+  useEffect(() => {
+    cargarProductos();
+    setCurrentPage(1);
+  }, [verInactivos]);
 
   const abrirModal = (producto = null) => {
     if (producto) {
@@ -92,15 +100,24 @@ export default function Inventario() {
   };
 
   const handleEliminar = async (id) => {
-    if (window.confirm('¿Estás seguro de eliminar este producto?')) {
+    if (window.confirm('¿Estás seguro de enviar este producto a la papelera?')) {
       try {
-        // Eliminar: DELETE /api/productos/{id}
         await apiFetch(`/productos/${id}`, { method: 'DELETE' });
         setProductos(prev => prev.filter(p => p.id !== id));
-        alert('Producto eliminado con éxito');
+        alert('Producto enviado a la papelera');
       } catch (error) {
         alert('Error al eliminar el producto');
       }
+    }
+  };
+
+  const handleRecuperar = async (id) => {
+    try {
+      await apiFetch(`/productos/${id}/recuperar`, { method: 'PUT' });
+      setProductos(prev => prev.filter(p => p.id !== id));
+      alert('Producto recuperado con éxito');
+    } catch (error) {
+      alert('Error al recuperar el producto');
     }
   };
 
@@ -114,7 +131,17 @@ export default function Inventario() {
     <div className="page-container">
       <div className="page-header">
         <h2>📦 Control de Inventario</h2>
-        <button className="btn-primary" onClick={() => abrirModal()}>+ Nuevo Producto</button>
+        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+          <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <input 
+              type="checkbox" 
+              checked={verInactivos} 
+              onChange={(e) => setVerInactivos(e.target.checked)} 
+            />
+            Ver Papelera
+          </label>
+          <button className="btn-primary" onClick={() => abrirModal()}>+ Nuevo Producto</button>
+        </div>
       </div>
 
       <table className="data-table">
@@ -145,8 +172,14 @@ export default function Inventario() {
               <td>${Number(prod.precioCosto).toLocaleString()}</td>
               <td>${Number(prod.precioVenta || 0).toLocaleString()}</td>
               <td>
-                <button className="btn-action" onClick={() => abrirModal(prod)}>Editar</button>
-                <button className="btn-danger" onClick={() => handleEliminar(prod.id)}>Eliminar</button>
+                {!verInactivos ? (
+                  <>
+                    <button className="btn-action" onClick={() => abrirModal(prod)}>Editar</button>
+                    <button className="btn-danger" onClick={() => handleEliminar(prod.id)}>Eliminar</button>
+                  </>
+                ) : (
+                  <button className="btn-primary" style={{backgroundColor: '#55efc4'}} onClick={() => handleRecuperar(prod.id)}>Recuperar</button>
+                )}
               </td>
             </tr>
           ))}

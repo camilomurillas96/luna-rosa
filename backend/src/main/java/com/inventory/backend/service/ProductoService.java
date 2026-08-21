@@ -36,7 +36,11 @@ public class ProductoService {
     }
 
     public List<ProductoDTO> listarTodos() {
-        return productoRepository.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+        return productoRepository.findByActivoTrue().stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    public List<ProductoDTO> listarInactivos() {
+        return productoRepository.findByActivoFalse().stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
     public ProductoDTO obtenerPorId(Long id) {
@@ -74,7 +78,18 @@ public class ProductoService {
 
     @Transactional
     public void eliminarProducto(Long id) {
-        productoRepository.deleteById(id);
+        Producto p = productoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+        p.setActivo(false);
+        productoRepository.save(p);
+    }
+
+    @Transactional
+    public void recuperarProducto(Long id) {
+        Producto p = productoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+        p.setActivo(true);
+        productoRepository.save(p);
     }
 
     @Transactional

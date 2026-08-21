@@ -4,5 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 
 public record MarcaDTO(
         Long id,
-        @NotBlank String nombre
+        @NotBlank String nombre,
+        Boolean activo
 ) {}

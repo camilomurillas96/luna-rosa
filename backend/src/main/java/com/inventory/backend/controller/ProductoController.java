@@ -18,6 +18,9 @@ public class ProductoController {
     @GetMapping
     public List<ProductoDTO> listar() { return productoService.listarTodos(); }
 
+    @GetMapping("/inactivos")
+    public List<ProductoDTO> listarInactivos() { return productoService.listarInactivos(); }
+
     @GetMapping("/stock-bajo")
     public List<ProductoDTO> stockBajo() { return productoService.obtenerStockBajo(); }
 
@@ -35,6 +38,10 @@ public class ProductoController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public void eliminar(@PathVariable Long id) { productoService.eliminarProducto(id); }
+
+    @PutMapping("/{id}/recuperar")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public void recuperar(@PathVariable Long id) { productoService.recuperarProducto(id); }
 
     @PostMapping("/{id}/movimientos")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")

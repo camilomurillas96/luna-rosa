@@ -21,7 +21,11 @@ public class CategoriaService {
     }
 
     public List<CategoriaDTO> listarTodas() {
-        return categoriaRepository.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+        return categoriaRepository.findByActivoTrue().stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    public List<CategoriaDTO> listarInactivas() {
+        return categoriaRepository.findByActivoFalse().stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
     public CategoriaDTO obtenerPorId(Long id) {
@@ -60,13 +64,24 @@ public class CategoriaService {
 
     @Transactional
     public void eliminar(Long id) {
-        if (!categoriaRepository.existsById(id)) throw new ResourceNotFoundException("Categoría no encontrada");
-        categoriaRepository.deleteById(id);
+        Categoria cat = categoriaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada"));
+        cat.setActivo(false);
+        categoriaRepository.save(cat);
+    }
+
+    @Transactional
+    public void recuperar(Long id) {
+        Categoria cat = categoriaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada"));
+        cat.setActivo(true);
+        categoriaRepository.save(cat);
     }
 
     private CategoriaDTO mapToDTO(Categoria c) {
         return new CategoriaDTO(c.getId(), c.getNombre(), c.getDescripcion(),
                 c.getCategoriaPadre() != null ? c.getCategoriaPadre().getId() : null,
-                c.getCategoriaPadre() != null ? c.getCategoriaPadre().getNombre() : null);
+                c.getCategoriaPadre() != null ? c.getCategoriaPadre().getNombre() : null,
+                c.getActivo());
     }
 }

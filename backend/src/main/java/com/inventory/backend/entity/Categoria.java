@@ -16,4 +16,6 @@ public class Categoria {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_padre_id")
     private Categoria categoriaPadre;
+
+    private Boolean activo = true;
 }

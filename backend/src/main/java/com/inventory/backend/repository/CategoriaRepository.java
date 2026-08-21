@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     List<Categoria> findByCategoriaPadreIsNull();
+    List<Categoria> findByActivoTrue();
+    List<Categoria> findByActivoFalse();
 }

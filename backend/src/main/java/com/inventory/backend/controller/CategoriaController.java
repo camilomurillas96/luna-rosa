@@ -22,6 +22,9 @@ public class CategoriaController {
     @GetMapping
     public List<CategoriaDTO> listar() { return categoriaService.listarTodas(); }
 
+    @GetMapping("/inactivos")
+    public List<CategoriaDTO> listarInactivos() { return categoriaService.listarInactivas(); }
+
     @GetMapping("/{id}")
     public CategoriaDTO obtener(@PathVariable Long id) { return categoriaService.obtenerPorId(id); }
 
@@ -36,4 +39,8 @@ public class CategoriaController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public void eliminar(@PathVariable Long id) { categoriaService.eliminar(id); }
+
+    @PutMapping("/{id}/recuperar")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public void recuperar(@PathVariable Long id) { categoriaService.recuperar(id); }
 }

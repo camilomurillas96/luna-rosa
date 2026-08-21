@@ -1,22 +1,30 @@
 import { useState, useEffect } from 'react';
 import { obtenerMarcas, crearMarca, actualizarMarca, eliminarMarca } from '../services/brandService';
+import { apiFetch } from '../services/api';
 import Pagination from '../components/Pagination';
 
 export default function Marcas() {
   const [marcas, setMarcas] = useState([]);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [formData, setFormData] = useState({ id: null, nombre: '' });
+  const [verInactivos, setVerInactivos] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
   useEffect(() => {
     cargarMarcas();
-  }, []);
+    setCurrentPage(1);
+  }, [verInactivos]);
 
   const cargarMarcas = async () => {
     try {
-      const data = await obtenerMarcas();
+      let data = [];
+      if (verInactivos) {
+        data = await apiFetch('/marcas/inactivos');
+      } else {
+        data = await obtenerMarcas();
+      }
       setMarcas(data);
     } catch (error) {
       console.error('No se pudieron cargar las marcas', error);
@@ -49,14 +57,24 @@ export default function Marcas() {
   };
 
   const handleEliminar = async (id) => {
-    if (window.confirm('¿Estás seguro de eliminar esta marca?')) {
+    if (window.confirm('¿Estás seguro de enviar esta marca a la papelera?')) {
       try {
         await eliminarMarca(id);
         setMarcas(prev => prev.filter(m => m.id !== id));
-        alert('Marca eliminada con éxito');
+        alert('Marca enviada a la papelera');
       } catch (error) {
         alert('Error al eliminar la marca');
       }
+    }
+  };
+
+  const handleRecuperar = async (id) => {
+    try {
+      await apiFetch(`/marcas/${id}/recuperar`, { method: 'PUT' });
+      setMarcas(prev => prev.filter(m => m.id !== id));
+      alert('Marca recuperada con éxito');
+    } catch (error) {
+      alert('Error al recuperar la marca');
     }
   };
  
@@ -70,7 +88,17 @@ export default function Marcas() {
     <div className="page-container">
       <div className="page-header">
         <h2>🏢 Marcas</h2>
-        <button className="btn-primary" onClick={() => abrirModal()}>+ Nueva Marca</button>
+        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+          <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <input 
+              type="checkbox" 
+              checked={verInactivos} 
+              onChange={(e) => setVerInactivos(e.target.checked)} 
+            />
+            Ver Papelera
+          </label>
+          <button className="btn-primary" onClick={() => abrirModal()}>+ Nueva Marca</button>
+        </div>
       </div>
 
       <table className="data-table">
@@ -87,8 +115,14 @@ export default function Marcas() {
               <td>{indexOfFirstItem + index + 1}</td>
               <td>{marca.nombre}</td>
               <td>
-                <button className="btn-action" onClick={() => abrirModal(marca)}>Editar</button>
-                <button className="btn-danger" onClick={() => handleEliminar(marca.id)}>Eliminar</button>
+                {!verInactivos ? (
+                  <>
+                    <button className="btn-action" onClick={() => abrirModal(marca)}>Editar</button>
+                    <button className="btn-danger" onClick={() => handleEliminar(marca.id)}>Eliminar</button>
+                  </>
+                ) : (
+                  <button className="btn-primary" style={{backgroundColor: '#55efc4'}} onClick={() => handleRecuperar(marca.id)}>Recuperar</button>
+                )}
               </td>
             </tr>
           ))}

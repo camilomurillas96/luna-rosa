@@ -20,7 +20,15 @@ public class MarcaService {
     }
 
     public List<MarcaDTO> listarTodas() {
-        return marcaRepository.findAll().stream().map(m -> new MarcaDTO(m.getId(), m.getNombre())).collect(Collectors.toList());
+        return marcaRepository.findByActivoTrue().stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    public List<MarcaDTO> listarInactivas() {
+        return marcaRepository.findByActivoFalse().stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    private MarcaDTO mapToDTO(Marca m) {
+        return new MarcaDTO(m.getId(), m.getNombre(), m.getActivo());
     }
 
     @Transactional
@@ -28,7 +36,7 @@ public class MarcaService {
         Marca m = new Marca();
         m.setNombre(dto.nombre());
         m = marcaRepository.save(m);
-        return new MarcaDTO(m.getId(), m.getNombre());
+        return mapToDTO(m);
     }
 
     @Transactional
@@ -36,12 +44,22 @@ public class MarcaService {
         Marca m = marcaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Marca no encontrada"));
         m.setNombre(dto.nombre());
-        return new MarcaDTO(m.getId(), m.getNombre());
+        return mapToDTO(m);
     }
 
     @Transactional
     public void eliminar(Long id) {
-        if (!marcaRepository.existsById(id)) throw new ResourceNotFoundException("Marca no encontrada");
-        marcaRepository.deleteById(id);
+        Marca m = marcaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Marca no encontrada"));
+        m.setActivo(false);
+        marcaRepository.save(m);
+    }
+
+    @Transactional
+    public void recuperar(Long id) {
+        Marca m = marcaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Marca no encontrada"));
+        m.setActivo(true);
+        marcaRepository.save(m);
     }
 }

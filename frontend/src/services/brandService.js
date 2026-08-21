@@ -4,3 +4,5 @@ export const obtenerMarcas = () => apiFetch('/marcas');
 export const crearMarca = (marca) => apiFetch('/marcas', { method: 'POST', body: JSON.stringify(marca) });
 export const actualizarMarca = (id, marca) => apiFetch(`/marcas/${id}`, { method: 'PUT', body: JSON.stringify(marca) });
 export const eliminarMarca = (id) => apiFetch(`/marcas/${id}`, { method: 'DELETE' });
+export const obtenerMarcasInactivas = () => apiFetch('/marcas/inactivos');
+export const recuperarMarca = (id) => apiFetch(`/marcas/${id}/recuperar`, { method: 'PUT' });

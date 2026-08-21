@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MarcaRepository extends JpaRepository<Marca, Long> {
+    java.util.List<Marca> findByActivoTrue();
+    java.util.List<Marca> findByActivoFalse();
 }

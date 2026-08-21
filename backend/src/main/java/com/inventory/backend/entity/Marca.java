@@ -11,4 +11,6 @@ public class Marca {
 
     @Column(nullable = false)
     private String nombre;
+
+    private Boolean activo = true;
 }

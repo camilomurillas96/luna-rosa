@@ -7,5 +7,6 @@ public record CategoriaDTO(
         @NotBlank String nombre,
         String descripcion,
         Long categoriaPadreId,
-        String categoriaPadreNombre
+        String categoriaPadreNombre,
+        Boolean activo
 ) {}

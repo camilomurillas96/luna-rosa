@@ -15,6 +15,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByCategoriaId(Long categoriaId);
     List<Producto> findByNombreContainingIgnoreCase(String nombre);
     List<Producto> findByActivoTrue();
+    List<Producto> findByActivoFalse();
 
     @Query("SELECT p FROM Producto p WHERE p.stock <= p.stockMinimo")
     List<Producto> findProductosConStockBajo();

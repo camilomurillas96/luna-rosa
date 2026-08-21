@@ -18,6 +18,9 @@ public class MarcaController {
     @GetMapping
     public List<MarcaDTO> listar() { return marcaService.listarTodas(); }
 
+    @GetMapping("/inactivos")
+    public List<MarcaDTO> listarInactivos() { return marcaService.listarInactivas(); }
+
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public MarcaDTO crear(@Valid @RequestBody MarcaDTO dto) { return marcaService.crear(dto); }
@@ -29,4 +32,8 @@ public class MarcaController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public void eliminar(@PathVariable Long id) { marcaService.eliminar(id); }
+
+    @PutMapping("/{id}/recuperar")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public void recuperar(@PathVariable Long id) { marcaService.recuperar(id); }
 }
