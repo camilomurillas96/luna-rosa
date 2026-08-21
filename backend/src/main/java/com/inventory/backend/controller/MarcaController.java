@@ -19,14 +19,14 @@ public class MarcaController {
     public List<MarcaDTO> listar() { return marcaService.listarTodas(); }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public MarcaDTO crear(@Valid @RequestBody MarcaDTO dto) { return marcaService.crear(dto); }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public MarcaDTO actualizar(@PathVariable Long id, @Valid @RequestBody MarcaDTO dto) { return marcaService.actualizar(id, dto); }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public void eliminar(@PathVariable Long id) { marcaService.eliminar(id); }
 }
