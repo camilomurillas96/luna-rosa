@@ -32,6 +32,10 @@ public class ProductoController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ProductoDTO actualizar(@PathVariable Long id, @Valid @RequestBody ProductoDTO dto) { return productoService.actualizarProducto(id, dto); }
 
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public void eliminar(@PathVariable Long id) { productoService.eliminarProducto(id); }
+
     @PostMapping("/{id}/movimientos")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public void registrarMovimiento(@PathVariable Long id, @Valid @RequestBody MovimientoRequest req, Principal principal) {

@@ -73,6 +73,11 @@ public class ProductoService {
     }
 
     @Transactional
+    public void eliminarProducto(Long id) {
+        productoRepository.deleteById(id);
+    }
+
+    @Transactional
     public void registrarMovimiento(Long productoId, String tipo, int cantidad, String motivo, String username) {
         Producto p = productoRepository.findById(productoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
