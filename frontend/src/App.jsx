@@ -38,7 +38,7 @@ function App() {
         <aside className="sidebar">
           <div className="sidebar-header">
             <img src={logo} alt="Luna Rosa" className="sidebar-logo" />
-            {/* <h3 className="sidebar-username">¡Hola, {nombreUsuario}!</h3> */}
+            {isAdmin && <h3 className="sidebar-username">¡Hola, {nombreUsuario}!</h3>}
           </div>
           <nav className="sidebar-nav">
             <NavLink to="/" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
