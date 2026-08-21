@@ -12,6 +12,9 @@ export default function Marcas() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
+  const roles = JSON.parse(localStorage.getItem('roles') || '[]');
+  const isAdmin = roles.includes('ROLE_ADMIN') || roles.includes('ADMIN') || roles.includes('Administrador');
+
   useEffect(() => {
     cargarMarcas();
     setCurrentPage(1);
@@ -89,14 +92,16 @@ export default function Marcas() {
       <div className="page-header">
         <h2>🏢 Marcas</h2>
         <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-          <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <input 
-              type="checkbox" 
-              checked={verInactivos} 
-              onChange={(e) => setVerInactivos(e.target.checked)} 
-            />
-            Ver Papelera
-          </label>
+          {isAdmin && (
+            <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <input 
+                type="checkbox" 
+                checked={verInactivos} 
+                onChange={(e) => setVerInactivos(e.target.checked)} 
+              />
+              Ver Papelera
+            </label>
+          )}
           <button className="btn-primary" onClick={() => abrirModal()}>+ Nueva Marca</button>
         </div>
       </div>
