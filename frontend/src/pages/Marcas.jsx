@@ -52,7 +52,8 @@ export default function Marcas() {
     if (window.confirm('¿Estás seguro de eliminar esta marca?')) {
       try {
         await eliminarMarca(id);
-        cargarMarcas();
+        setMarcas(prev => prev.filter(m => m.id !== id));
+        alert('Marca eliminada con éxito');
       } catch (error) {
         alert('Error al eliminar la marca');
       }

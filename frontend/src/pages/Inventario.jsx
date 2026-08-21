@@ -96,7 +96,8 @@ export default function Inventario() {
       try {
         // Eliminar: DELETE /api/productos/{id}
         await apiFetch(`/productos/${id}`, { method: 'DELETE' });
-        cargarProductos(); // Refrescar la tabla
+        setProductos(prev => prev.filter(p => p.id !== id));
+        alert('Producto eliminado con éxito');
       } catch (error) {
         alert('Error al eliminar el producto');
       }

@@ -65,7 +65,8 @@ export default function Usuarios() {
     if (window.confirm('¿Estás seguro de eliminar este usuario?')) {
       try {
         await eliminarUsuario(id);
-        cargarUsuarios();
+        setUsuarios(prev => prev.filter(u => u.id !== id));
+        alert('Usuario eliminado con éxito');
       } catch (error) {
         alert('Error al eliminar el usuario');
       }

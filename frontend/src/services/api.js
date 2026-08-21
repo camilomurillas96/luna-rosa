@@ -18,7 +18,8 @@ export const apiFetch = async (endpoint, options = {}) => {
 
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
-    headers
+    headers,
+    cache: 'no-store'
   });
 
   if (!response.ok) {
@@ -33,5 +34,10 @@ export const apiFetch = async (endpoint, options = {}) => {
   // Si la respuesta no tiene contenido (como un DELETE), devolvemos null
   if (response.status === 204) return null;
   
-  return response.json();
+  const text = await response.text();
+  try {
+    return text ? JSON.parse(text) : null;
+  } catch (err) {
+    return text; // Si es texto plano (ej: "Eliminado con éxito"), lo devolvemos tal cual
+  }
 };

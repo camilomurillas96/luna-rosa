@@ -52,7 +52,8 @@ export default function Categorias() {
     if (window.confirm('¿Estás seguro de eliminar esta categoría?')) {
       try {
         await eliminarCategoria(id);
-        cargarCategorias();
+        setCategorias(prev => prev.filter(c => c.id !== id));
+        alert('Categoría eliminada con éxito');
       } catch (error) {
         alert('Error al eliminar la categoría');
       }
