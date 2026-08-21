@@ -9,7 +9,7 @@ export default function Inventario() {
   const [categoriasList, setCategoriasList] = useState([]);
   const [marcasList, setMarcasList] = useState([]);
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [formData, setFormData] = useState({ id: null, nombre: '', categoriaId: '', marcaId: '', stock: '', precioCosto: '' });
+  const [formData, setFormData] = useState({ id: null, nombre: '', categoriaId: '', marcaId: '', stock: '', precioCosto: '', precioVenta: '' });
   
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -51,7 +51,7 @@ export default function Inventario() {
         marcaId: producto.marcaId || ''
       });
     } else {
-      setFormData({ id: null, nombre: '', categoriaId: '', marcaId: '', stock: '', precioCosto: '' });
+      setFormData({ id: null, nombre: '', categoriaId: '', marcaId: '', stock: '', precioCosto: '', precioVenta: '' });
     }
     setModalAbierto(true);
   };
@@ -125,7 +125,8 @@ export default function Inventario() {
             <th>Categoría</th>
             <th>Marca</th>
             <th>Stock</th>
-            <th>Precio</th>
+            <th>Costo</th>
+            <th>Venta</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -142,6 +143,7 @@ export default function Inventario() {
                 </span>
               </td>
               <td>${Number(prod.precioCosto).toLocaleString()}</td>
+              <td>${Number(prod.precioVenta || 0).toLocaleString()}</td>
               <td>
                 <button className="btn-action" onClick={() => abrirModal(prod)}>Editar</button>
                 <button className="btn-danger" onClick={() => handleEliminar(prod.id)}>Eliminar</button>
@@ -149,7 +151,7 @@ export default function Inventario() {
             </tr>
           ))}
           {productos.length === 0 && (
-            <tr><td colSpan="7" style={{textAlign: 'center'}}>No hay productos en el inventario.</td></tr>
+            <tr><td colSpan="8" style={{textAlign: 'center'}}>No hay productos en el inventario.</td></tr>
           )}
         </tbody>
       </table>
@@ -193,8 +195,12 @@ export default function Inventario() {
                 <input type="number" name="stock" value={formData.stock} onChange={handleChange} required min="0" />
               </div>
               <div className="form-group">
-                <label>Precio ($)</label>
+                <label>Precio Costo ($)</label>
                 <input type="number" name="precioCosto" value={formData.precioCosto} onChange={handleChange} required min="0" />
+              </div>
+              <div className="form-group">
+                <label>Precio Venta ($)</label>
+                <input type="number" name="precioVenta" value={formData.precioVenta} onChange={handleChange} required min="0" />
               </div>
               <div className="modal-actions">
                 <button type="button" className="btn-secondary" onClick={cerrarModal}>Cancelar</button>
