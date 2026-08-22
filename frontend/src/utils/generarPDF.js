@@ -2,7 +2,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import logoUrl from '../assets/luna-rosa-.jpeg';
 
-export const generarComprobantePDF = async (detalles, cliente, metodoPago, total, isCotizacion = false) => {
+export const generarComprobantePDF = async (detalles, cliente, metodoPago, total, isCotizacion = false, ventaId = null) => {
   if (!detalles || detalles.length === 0) {
     alert('No hay productos para generar el comprobante.');
     return;
@@ -43,6 +43,9 @@ export const generarComprobantePDF = async (detalles, cliente, metodoPago, total
     doc.text(`Teléfono: ${cliente.telefono}`, 50, 42);
   }
   doc.text(`Método de Pago: ${metodoPago}`, 50, 48);
+  if (ventaId) {
+    doc.text(`ID de Venta: #${ventaId}`, 50, 54);
+  }
 
   // Tabla de productos
   const tableColumn = ["Producto", "Cantidad", "Precio Unitario", "Subtotal"];
@@ -61,7 +64,7 @@ export const generarComprobantePDF = async (detalles, cliente, metodoPago, total
   autoTable(doc, {
     head: [tableColumn],
     body: tableRows,
-    startY: 55,
+    startY: ventaId ? 60 : 55,
     theme: 'grid',
     headStyles: { fillColor: [255, 105, 180] } // Rosado
   });

@@ -6,11 +6,15 @@ export default function Reportes() {
   const [ventas, setVentas] = useState([]);
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
+  const [busquedaId, setBusquedaId] = useState('');
   const [ocultarAnuladas, setOcultarAnuladas] = useState(false);
 
   const ventasFiltradas = ventas.filter(venta => {
     // Filtrar por estado de anulación
     if (ocultarAnuladas && !venta.activa) return false;
+
+    // Filtrar por ID de venta
+    if (busquedaId && !venta.id.toString().includes(busquedaId.trim())) return false;
 
     // Filtrar por fechas
     if (fechaInicio || fechaFin) {
@@ -76,7 +80,7 @@ export default function Reportes() {
       nombre: venta.clienteNombre,
       telefono: venta.clienteTelefono
     };
-    await generarComprobantePDF(venta.detalles, cliente, venta.metodoPago, venta.total, false);
+    await generarComprobantePDF(venta.detalles, cliente, venta.metodoPago, venta.total, false, venta.id);
   };
 
   return (
@@ -86,6 +90,10 @@ export default function Reportes() {
       </div>
 
       <div style={{ display: 'flex', gap: '15px', marginBottom: '20px', alignItems: 'center', backgroundColor: '#fff', padding: '15px', borderRadius: '10px', border: '1px solid #ddd', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: '150px' }}>
+          <label style={{ fontSize: '0.9em', color: '#666', marginBottom: '5px' }}>Buscar por ID:</label>
+          <input type="text" placeholder="Ej: 123" value={busquedaId} onChange={(e) => setBusquedaId(e.target.value)} style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', outline: 'none' }} />
+        </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label style={{ fontSize: '0.9em', color: '#666', marginBottom: '5px' }}>Fecha Inicio:</label>
           <input type="date" value={fechaInicio} onChange={(e) => setFechaInicio(e.target.value)} style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', outline: 'none' }} />
