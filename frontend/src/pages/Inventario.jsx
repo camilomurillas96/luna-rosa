@@ -11,6 +11,7 @@ export default function Inventario() {
   const [modalAbierto, setModalAbierto] = useState(false);
   const [formData, setFormData] = useState({ id: null, nombre: '', categoriaId: '', marcaId: '', stock: '', precioCosto: '', precioVenta: '' });
   const [verInactivos, setVerInactivos] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -124,17 +125,30 @@ export default function Inventario() {
     }
   };
 
+  const productosFiltrados = productos.filter(p =>
+    p.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (p.categoriaNombre && p.categoriaNombre.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (p.marcaNombre && p.marcaNombre.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProductos = productos.slice(indexOfFirstItem, indexOfLastItem);
+  const currentProductos = productosFiltrados.slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="page-container">
-      <div className="page-header">
+      <div className="page-header" style={{ flexWrap: 'wrap', gap: '15px' }}>
         <h2>📦 Control de Inventario</h2>
-        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <input 
+            type="text" 
+            placeholder="Buscar producto, categoría o marca..." 
+            value={searchTerm} 
+            onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+            style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', minWidth: '250px' }}
+          />
           {isAdmin && (
             <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}>
               <input 
@@ -149,7 +163,8 @@ export default function Inventario() {
         </div>
       </div>
 
-      <table className="data-table">
+      <div className="table-responsive" style={{ overflowX: 'auto', width: '100%', marginBottom: '1rem' }}>
+        <table className="data-table">
         <thead>
           <tr>
             <th>#</th>
@@ -176,27 +191,28 @@ export default function Inventario() {
               </td>
               <td>${Number(prod.precioCosto).toLocaleString()}</td>
               <td>${Number(prod.precioVenta || 0).toLocaleString()}</td>
-              <td>
+              <td style={{ whiteSpace: 'nowrap' }}>
                 {!verInactivos ? (
-                  <>
+                  <div style={{ display: 'flex', gap: '5px' }}>
                     <button className="btn-action" onClick={() => abrirModal(prod)}>Editar</button>
                     <button className="btn-danger" onClick={() => handleEliminar(prod.id)}>Eliminar</button>
-                  </>
+                  </div>
                 ) : (
                   <button className="btn-primary" style={{backgroundColor: '#55efc4'}} onClick={() => handleRecuperar(prod.id)}>Recuperar</button>
                 )}
               </td>
             </tr>
           ))}
-          {productos.length === 0 && (
-            <tr><td colSpan="8" style={{textAlign: 'center'}}>No hay productos en el inventario.</td></tr>
+          {productosFiltrados.length === 0 && (
+            <tr><td colSpan="8" style={{textAlign: 'center'}}>No se encontraron productos.</td></tr>
           )}
         </tbody>
-      </table>
+        </table>
+      </div>
       
       <Pagination 
         itemsPerPage={itemsPerPage} 
-        totalItems={productos.length} 
+        totalItems={productosFiltrados.length} 
         paginate={paginate} 
         currentPage={currentPage} 
       />

@@ -8,6 +8,7 @@ export default function Marcas() {
   const [modalAbierto, setModalAbierto] = useState(false);
   const [formData, setFormData] = useState({ id: null, nombre: '' });
   const [verInactivos, setVerInactivos] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -81,17 +82,28 @@ export default function Marcas() {
     }
   };
  
+  const marcasFiltradas = marcas.filter(m =>
+    m.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentMarcas = marcas.slice(indexOfFirstItem, indexOfLastItem);
+  const currentMarcas = marcasFiltradas.slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="page-container">
-      <div className="page-header">
+      <div className="page-header" style={{ flexWrap: 'wrap', gap: '15px' }}>
         <h2>🏢 Marcas</h2>
-        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <input 
+            type="text" 
+            placeholder="Buscar marca..." 
+            value={searchTerm} 
+            onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+            style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', minWidth: '200px' }}
+          />
           {isAdmin && (
             <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}>
               <input 
@@ -106,7 +118,8 @@ export default function Marcas() {
         </div>
       </div>
 
-      <table className="data-table">
+      <div className="table-responsive" style={{ overflowX: 'auto', width: '100%', marginBottom: '1rem' }}>
+        <table className="data-table">
         <thead>
           <tr>
             <th>#</th>
@@ -119,27 +132,28 @@ export default function Marcas() {
             <tr key={marca.id}>
               <td>{indexOfFirstItem + index + 1}</td>
               <td>{marca.nombre}</td>
-              <td>
+              <td style={{ whiteSpace: 'nowrap' }}>
                 {!verInactivos ? (
-                  <>
+                  <div style={{ display: 'flex', gap: '5px' }}>
                     <button className="btn-action" onClick={() => abrirModal(marca)}>Editar</button>
                     <button className="btn-danger" onClick={() => handleEliminar(marca.id)}>Eliminar</button>
-                  </>
+                  </div>
                 ) : (
                   <button className="btn-primary" style={{backgroundColor: '#55efc4'}} onClick={() => handleRecuperar(marca.id)}>Recuperar</button>
                 )}
               </td>
             </tr>
           ))}
-          {marcas.length === 0 && (
-            <tr><td colSpan="3" style={{textAlign: 'center'}}>No hay marcas.</td></tr>
+          {marcasFiltradas.length === 0 && (
+            <tr><td colSpan="3" style={{textAlign: 'center'}}>No se encontraron marcas.</td></tr>
           )}
         </tbody>
-      </table>
+        </table>
+      </div>
 
       <Pagination 
         itemsPerPage={itemsPerPage} 
-        totalItems={marcas.length} 
+        totalItems={marcasFiltradas.length} 
         paginate={paginate} 
         currentPage={currentPage} 
       />
