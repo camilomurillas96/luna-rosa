@@ -4,7 +4,38 @@ import { generarComprobantePDF } from '../utils/generarPDF';
 
 export default function Reportes() {
   const [ventas, setVentas] = useState([]);
-  
+  const [fechaInicio, setFechaInicio] = useState('');
+  const [fechaFin, setFechaFin] = useState('');
+  const [ocultarAnuladas, setOcultarAnuladas] = useState(false);
+
+  const ventasFiltradas = ventas.filter(venta => {
+    // Filtrar por estado de anulación
+    if (ocultarAnuladas && !venta.activa) return false;
+
+    // Filtrar por fechas
+    if (fechaInicio || fechaFin) {
+      const fechaVenta = new Date(venta.fecha[0], venta.fecha[1] - 1, venta.fecha[2]);
+      
+      if (fechaInicio) {
+        const fInicio = new Date(fechaInicio);
+        // Ajustamos la hora para que cubra todo el día desde las 00:00:00 (en hora local, aunque por default type="date" asume medianoche UTC si se parsea así. Pero new Date("YYYY-MM-DD") en JS asume UTC, así que sumarle timezone offset o simplemente usar la fecha local de `fInicio.setUTCHours(0)` puede ser útil, pero para no complicarnos sumamos/restamos en local timezone).
+        // En realidad, para evitar lios de zona horaria con input date (que devuelve YYYY-MM-DD):
+        const [y, m, d] = fechaInicio.split('-');
+        const fInicioLocal = new Date(y, m - 1, d);
+        if (fechaVenta < fInicioLocal) return false;
+      }
+      
+      if (fechaFin) {
+        const [y, m, d] = fechaFin.split('-');
+        const fFinLocal = new Date(y, m - 1, d);
+        fFinLocal.setHours(23, 59, 59, 999);
+        if (fechaVenta > fFinLocal) return false;
+      }
+    }
+    
+    return true;
+  });
+
   useEffect(() => {
     cargarVentas();
   }, []);
@@ -26,7 +57,7 @@ export default function Reportes() {
   };
 
   const calcularTotalVendido = () => {
-    return ventas.filter(v => v.activa).reduce((sum, v) => sum + v.total, 0);
+    return ventasFiltradas.filter(v => v.activa).reduce((sum, v) => sum + v.total, 0);
   };
 
   const anularVenta = async (id) => {
@@ -54,10 +85,25 @@ export default function Reportes() {
         <h2>📊 Reporte de Ventas</h2>
       </div>
 
+      <div style={{ display: 'flex', gap: '15px', marginBottom: '20px', alignItems: 'center', backgroundColor: '#fff', padding: '15px', borderRadius: '10px', border: '1px solid #ddd', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label style={{ fontSize: '0.9em', color: '#666', marginBottom: '5px' }}>Fecha Inicio:</label>
+          <input type="date" value={fechaInicio} onChange={(e) => setFechaInicio(e.target.value)} style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', outline: 'none' }} />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label style={{ fontSize: '0.9em', color: '#666', marginBottom: '5px' }}>Fecha Fin:</label>
+          <input type="date" value={fechaFin} onChange={(e) => setFechaFin(e.target.value)} style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', outline: 'none' }} />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: 'auto' }}>
+          <input type="checkbox" id="ocultarAnuladas" checked={ocultarAnuladas} onChange={(e) => setOcultarAnuladas(e.target.checked)} style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: '#ff69b4' }} />
+          <label htmlFor="ocultarAnuladas" style={{ cursor: 'pointer', color: '#444', fontWeight: 'bold' }}>Ocultar ventas anuladas</label>
+        </div>
+      </div>
+
       <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
         <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '10px', flex: 1, border: '1px solid #ddd', textAlign: 'center' }}>
           <h3 style={{ margin: '0 0 10px 0', color: '#666' }}>Ventas Totales</h3>
-          <h2 style={{ margin: 0, color: '#ff69b4', fontSize: '30px' }}>{ventas.length}</h2>
+          <h2 style={{ margin: 0, color: '#ff69b4', fontSize: '30px' }}>{ventasFiltradas.length}</h2>
         </div>
         <div style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '10px', flex: 1, border: '1px solid #ddd', textAlign: 'center' }}>
           <h3 style={{ margin: '0 0 10px 0', color: '#666' }}>Ingresos Totales</h3>
@@ -79,7 +125,7 @@ export default function Reportes() {
             </tr>
           </thead>
           <tbody>
-            {ventas.map((venta) => (
+            {ventasFiltradas.map((venta) => (
               <tr key={venta.id} style={{ opacity: venta.activa ? 1 : 0.6 }}>
                 <td>#{venta.id} {!venta.activa && <span style={{color: 'red', fontWeight: 'bold'}}>[ANULADA]</span>}</td>
                 <td style={{ textDecoration: !venta.activa ? 'line-through' : 'none' }}>{formatearFecha(venta.fecha)}</td>
@@ -110,8 +156,8 @@ export default function Reportes() {
                 </td>
               </tr>
             ))}
-            {ventas.length === 0 && (
-              <tr><td colSpan="7" style={{textAlign: 'center'}}>Aún no hay ventas registradas.</td></tr>
+            {ventasFiltradas.length === 0 && (
+              <tr><td colSpan="7" style={{textAlign: 'center'}}>No hay ventas que coincidan con los filtros.</td></tr>
             )}
           </tbody>
         </table>
