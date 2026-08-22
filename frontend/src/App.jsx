@@ -4,6 +4,8 @@ import Inventario from './pages/Inventario';
 import Usuarios from './pages/Usuarios';
 import Categorias from './pages/Categorias';
 import Marcas from './pages/Marcas';
+import PuntoVenta from './pages/PuntoVenta';
+import Reportes from './pages/Reportes';
 import Login from './pages/Login';
 import logo from './assets/luna-rosa-.jpeg';
 import './App.css';
@@ -44,6 +46,12 @@ function App() {
             <NavLink to="/" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
               📦 Inventario
             </NavLink>
+            <NavLink to="/ventas" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+              🛒 Vender
+            </NavLink>
+            <NavLink to="/reportes" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+              📊 Reportes
+            </NavLink>
             <NavLink to="/categorias" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
               🏷️ Categorias
             </NavLink>
@@ -66,6 +74,8 @@ function App() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Inventario />} />
+            <Route path="/ventas" element={<PuntoVenta />} />
+            <Route path="/reportes" element={<Reportes />} />
             <Route path="/categorias" element={<Categorias />} />
             <Route path="/marcas" element={<Marcas />} />
             {isAdmin && <Route path="/usuarios" element={<Usuarios />} />}

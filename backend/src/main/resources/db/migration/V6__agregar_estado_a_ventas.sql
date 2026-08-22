@@ -1,0 +1,1 @@
+ALTER TABLE venta ADD COLUMN activa BOOLEAN DEFAULT true;
