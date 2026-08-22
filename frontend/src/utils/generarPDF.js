@@ -33,7 +33,7 @@ export const generarComprobantePDF = async (detalles, cliente, metodoPago, total
   // Título y encabezado
   doc.setFontSize(22);
   doc.setTextColor(255, 105, 180); // Color rosado
-  doc.text(isCotizacion ? 'Luna Rosa - Cotización' : 'Luna Rosa - Comprobante', 50, 20);
+  doc.text(isCotizacion ? 'Luna Rosa - Cotización' : 'Luna Rosa - Factura de Venta', 50, 20);
 
   doc.setFontSize(12);
   doc.setTextColor(0, 0, 0);
@@ -74,6 +74,6 @@ export const generarComprobantePDF = async (detalles, cliente, metodoPago, total
   doc.setTextColor(100, 100, 100);
   doc.text('¡Gracias por tu preferencia!', 14, finalY + 25);
 
-  const nombreArchivo = isCotizacion ? `Cotizacion_${cliente?.nombre || 'Cliente'}.pdf` : `Comprobante_${cliente?.nombre || 'Cliente'}.pdf`;
+  const nombreArchivo = isCotizacion ? `Cotizacion_${cliente?.nombre || 'Cliente'}.pdf` : `Factura_${cliente?.nombre || 'Cliente'}.pdf`;
   doc.save(nombreArchivo);
 };
