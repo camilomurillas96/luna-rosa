@@ -9,6 +9,14 @@ export default function Reportes() {
   const [busquedaId, setBusquedaId] = useState('');
   const [mostrarAnuladas, setMostrarAnuladas] = useState(false);
 
+  const parsearFechaVenta = (fecha) => {
+    if (!fecha) return new Date();
+    if (Array.isArray(fecha)) {
+      return new Date(fecha[0], fecha[1] - 1, fecha[2], fecha[3] || 0, fecha[4] || 0);
+    }
+    return new Date(fecha);
+  };
+
   const ventasFiltradas = ventas.filter(venta => {
     // Filtrar por estado de anulación
     if (!mostrarAnuladas && !venta.activa) return false;
@@ -18,7 +26,7 @@ export default function Reportes() {
 
     // Filtrar por fechas
     if (fechaInicio || fechaFin) {
-      const fechaVenta = new Date(venta.fecha[0], venta.fecha[1] - 1, venta.fecha[2]);
+      const fechaVenta = parsearFechaVenta(venta.fecha);
       
       if (fechaInicio) {
         const fInicio = new Date(fechaInicio);
@@ -53,11 +61,10 @@ export default function Reportes() {
     }
   };
 
-  const formatearFecha = (fechaArray) => {
-    if (!fechaArray) return '';
-    // fechaArray is likely [YYYY, MM, DD, HH, mm, ss]
-    const date = new Date(fechaArray[0], fechaArray[1] - 1, fechaArray[2], fechaArray[3] || 0, fechaArray[4] || 0);
-    return date.toLocaleString();
+  const formatearFecha = (fecha) => {
+    if (!fecha) return '';
+    const date = parsearFechaVenta(fecha);
+    return isNaN(date.getTime()) ? 'Fecha Inválida' : date.toLocaleString();
   };
 
   const calcularTotalVendido = () => {
