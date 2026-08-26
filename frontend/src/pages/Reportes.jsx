@@ -7,11 +7,11 @@ export default function Reportes() {
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
   const [busquedaId, setBusquedaId] = useState('');
-  const [ocultarAnuladas, setOcultarAnuladas] = useState(false);
+  const [mostrarAnuladas, setMostrarAnuladas] = useState(false);
 
   const ventasFiltradas = ventas.filter(venta => {
     // Filtrar por estado de anulación
-    if (ocultarAnuladas && !venta.activa) return false;
+    if (!mostrarAnuladas && !venta.activa) return false;
 
     // Filtrar por ID de venta
     if (busquedaId && !venta.id.toString().includes(busquedaId.trim())) return false;
@@ -103,8 +103,8 @@ export default function Reportes() {
           <input type="date" value={fechaFin} onChange={(e) => setFechaFin(e.target.value)} style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', outline: 'none' }} />
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: 'auto' }}>
-          <input type="checkbox" id="ocultarAnuladas" checked={ocultarAnuladas} onChange={(e) => setOcultarAnuladas(e.target.checked)} style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: '#ff69b4' }} />
-          <label htmlFor="ocultarAnuladas" style={{ cursor: 'pointer', color: '#444', fontWeight: 'bold' }}>Ocultar ventas anuladas</label>
+          <input type="checkbox" id="mostrarAnuladas" checked={mostrarAnuladas} onChange={(e) => setMostrarAnuladas(e.target.checked)} style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: '#ff69b4' }} />
+          <label htmlFor="mostrarAnuladas" style={{ cursor: 'pointer', color: '#444', fontWeight: 'bold' }}>Mostrar ventas anuladas</label>
         </div>
       </div>
 
