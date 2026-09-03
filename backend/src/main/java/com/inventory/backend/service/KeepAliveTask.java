@@ -14,7 +14,7 @@ public class KeepAliveTask {
 
     // The cron expression or fixed rate to run every 14 minutes.
     // 840000 ms = 14 minutes
-    // @Scheduled(fixedRate = 840000) // TEMPORALMENTE DESACTIVADO para ahorrar horas en Render
+    @Scheduled(fixedRate = 840000)
     public void pingRenderService() {
         try {
             // Get the URL from environment variable
