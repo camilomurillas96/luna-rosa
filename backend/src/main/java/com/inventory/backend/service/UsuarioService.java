@@ -91,7 +91,7 @@ public class UsuarioService {
         
         if (u.getRoles() != null && !u.getRoles().isEmpty()) {
             String dbRole = u.getRoles().iterator().next().getNombre();
-            dto.setRol("ROLE_ADMIN".equals(dbRole) ? "Administrador" : "Vendedor");
+            dto.setRol("ROLE_ADMIN".equals(dbRole) ? "Administrador" : "Gerente");
         }
         return dto;
     }

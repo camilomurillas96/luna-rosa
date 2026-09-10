@@ -12,6 +12,6 @@ export const obtenerProductos = async () => {
 export const obtenerUsuarios = async () => {
   return [
     { id: 101, nombre: 'Ana García', rol: 'Administrador', estado: 'Activo' },
-    { id: 102, nombre: 'Carlos López', rol: 'Vendedor', estado: 'Inactivo' },
+    { id: 102, nombre: 'Carlos López', rol: 'Gerente', estado: 'Inactivo' },
   ];
 };

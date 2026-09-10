@@ -5,7 +5,7 @@ import Pagination from '../components/Pagination';
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [formData, setFormData] = useState({ id: null, nombre: '', username: '', password: '', confirmarPassword: '', rol: 'Vendedor', estado: 'Activo' });
+  const [formData, setFormData] = useState({ id: null, nombre: '', username: '', password: '', confirmarPassword: '', rol: 'Gerente', estado: 'Activo' });
   const [showPassword, setShowPassword] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,7 +29,7 @@ export default function Usuarios() {
       // Al editar no traemos el password o lo ponemos vacio
       setFormData({ ...usuario, password: '', confirmarPassword: '' });
     } else {
-      setFormData({ id: null, nombre: '', username: '', password: '', confirmarPassword: '', rol: 'Vendedor', estado: 'Activo' });
+      setFormData({ id: null, nombre: '', username: '', password: '', confirmarPassword: '', rol: 'Gerente', estado: 'Activo' });
     }
     setShowPassword(false);
     setModalAbierto(true);
@@ -175,7 +175,7 @@ export default function Usuarios() {
               <div className="form-group">
                 <label>Rol</label>
                 <select name="rol" value={formData.rol} onChange={handleChange} required>
-                  <option value="Vendedor">Vendedor</option>
+                  <option value="Gerente">Gerente</option>
                   <option value="Administrador">Administrador</option>
                 </select>
               </div>
