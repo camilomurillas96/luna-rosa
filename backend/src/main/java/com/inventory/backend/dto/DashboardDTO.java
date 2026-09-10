@@ -3,8 +3,11 @@ package com.inventory.backend.dto;
 import java.math.BigDecimal;
 
 public record DashboardDTO(
-        BigDecimal valorInventario,
-        long totalProductos,
-        long productosStockBajo,
-        long productosPorCaducar
+        Integer productosVendidos,
+        Integer stockActual,
+        BigDecimal inversionStock,
+        BigDecimal inversionVendidos,
+        BigDecimal inversionTotal,
+        BigDecimal ingresosVentas,
+        BigDecimal ganancias
 ) {}

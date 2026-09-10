@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, Navigate } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
 import Inventario from './pages/Inventario';
 import Usuarios from './pages/Usuarios';
 import Categorias from './pages/Categorias';
@@ -43,6 +44,9 @@ function App() {
             {isAdmin && <h3 className="sidebar-username">¡Hola, {nombreUsuario}!</h3>}
           </div>
           <nav className="sidebar-nav">
+            <NavLink to="/dashboard" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
+              📈 Resumen
+            </NavLink>
             <NavLink to="/" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
               📦 Inventario
             </NavLink>
@@ -73,13 +77,14 @@ function App() {
 
         <main className="main-content">
           <Routes>
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/" element={<Inventario />} />
             <Route path="/ventas" element={<PuntoVenta />} />
             <Route path="/reportes" element={<Reportes />} />
             <Route path="/categorias" element={<Categorias />} />
             <Route path="/marcas" element={<Marcas />} />
             {isAdmin && <Route path="/usuarios" element={<Usuarios />} />}
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="*" element={<Navigate to="/dashboard" />} />
           </Routes>
         </main>
       </div>

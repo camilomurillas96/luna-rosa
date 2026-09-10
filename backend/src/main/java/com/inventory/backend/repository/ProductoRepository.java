@@ -19,4 +19,10 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     @Query("SELECT p FROM Producto p WHERE p.stock <= p.stockMinimo")
     List<Producto> findProductosConStockBajo();
+
+    @Query("SELECT COALESCE(SUM(p.stock), 0) FROM Producto p WHERE p.activo = true")
+    Integer sumarStockTotal();
+
+    @Query("SELECT COALESCE(SUM(p.stock * p.precioCosto), 0) FROM Producto p WHERE p.activo = true")
+    java.math.BigDecimal sumarInversionStock();
 }

@@ -5,6 +5,7 @@ export const obtenerUsuarios = () => apiFetch('/usuarios');
 export const crearUsuario = (usuario) => apiFetch('/usuarios', { method: 'POST', body: JSON.stringify(usuario) });
 export const actualizarUsuario = (id, usuario) => apiFetch(`/usuarios/${id}`, { method: 'PUT', body: JSON.stringify(usuario) });
 export const eliminarUsuario = (id) => apiFetch(`/usuarios/${id}`, { method: 'DELETE' });
+export const obtenerResumenDashboard = () => apiFetch('/dashboard');
 
 export const apiFetch = async (endpoint, options = {}) => {
   // Recuperar el token del almacenamiento local

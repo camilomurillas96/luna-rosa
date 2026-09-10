@@ -2,32 +2,40 @@ package com.inventory.backend.service;
 
 import com.inventory.backend.dto.DashboardDTO;
 import com.inventory.backend.repository.ProductoRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.inventory.backend.repository.VentaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Service
 public class DashboardService {
-    private final ProductoService productoService;
     private final ProductoRepository productoRepository;
+    private final VentaRepository ventaRepository;
 
-    public DashboardService(ProductoService productoService, ProductoRepository productoRepository) {
-        this.productoService = productoService;
+    public DashboardService(ProductoRepository productoRepository, VentaRepository ventaRepository) {
         this.productoRepository = productoRepository;
+        this.ventaRepository = ventaRepository;
     }
 
     public DashboardDTO obtenerResumen() {
-        BigDecimal valorInventario = productoService.calcularValorInventario();
-        long totalProductos = productoRepository.count();
-        long stockBajo = productoRepository.findProductosConStockBajo().size();
+        Integer stockActual = productoRepository.sumarStockTotal();
+        BigDecimal inversionStock = productoRepository.sumarInversionStock();
+        
+        Integer productosVendidos = ventaRepository.sumarCantidadProductosVendidos();
+        BigDecimal ingresosVentas = ventaRepository.sumarIngresosVentas();
+        BigDecimal inversionVendidos = ventaRepository.sumarCostoProductosVendidos();
+        
+        BigDecimal inversionTotal = inversionStock.add(inversionVendidos);
+        BigDecimal ganancias = ingresosVentas.subtract(inversionVendidos);
 
-        LocalDate threshold = LocalDate.now().plusMonths(3);
-        long porCaducar = productoRepository.findByFechaVencimientoBefore(threshold).size();
-
-        return new DashboardDTO(valorInventario, totalProductos, stockBajo, porCaducar);
+        return new DashboardDTO(
+                productosVendidos,
+                stockActual,
+                inversionStock,
+                inversionVendidos,
+                inversionTotal,
+                ingresosVentas,
+                ganancias
+        );
     }
 }
