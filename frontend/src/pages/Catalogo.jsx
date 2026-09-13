@@ -40,6 +40,12 @@ export default function Catalogo() {
         </div>
       </div>
 
+      {/* Encabezado exclusivo para el PDF */}
+      <div className="print-only-header">
+        <h1>Luna Rosa</h1>
+        <p>Catálogo Exclusivo de Maquillaje</p>
+      </div>
+
       <div className="catalogo-grid" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
