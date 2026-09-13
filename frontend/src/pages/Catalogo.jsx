@@ -64,7 +64,7 @@ export default function Catalogo() {
             textAlign: 'center'
           }}>
             {prod.imagenUrl ? (
-              <img src={prod.imagenUrl} alt={prod.nombre} style={{ width: '100%', height: '250px', objectFit: 'contain', backgroundColor: '#fff', borderRadius: '8px', marginBottom: '10px' }} />
+              <img src={prod.imagenUrl} alt={prod.nombre} className="catalogo-img" />
             ) : (
               <div style={{ width: '100%', height: '250px', backgroundColor: '#f5f6fa', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px', color: '#a4b0be' }}>
                 📷 Sin imagen
