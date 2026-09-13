@@ -8,6 +8,7 @@ import Marcas from './pages/Marcas';
 import PuntoVenta from './pages/PuntoVenta';
 import Reportes from './pages/Reportes';
 import Login from './pages/Login';
+import Catalogo from './pages/Catalogo';
 import logo from './assets/luna-rosa-.jpeg';
 import './App.css';
 
@@ -84,6 +85,7 @@ function App() {
             <Route path="/categorias" element={<Categorias />} />
             <Route path="/marcas" element={<Marcas />} />
             {isAdmin && <Route path="/usuarios" element={<Usuarios />} />}
+            <Route path="/catalogo" element={<Catalogo />} />
             <Route path="*" element={<Navigate to="/dashboard" />} />
           </Routes>
         </main>

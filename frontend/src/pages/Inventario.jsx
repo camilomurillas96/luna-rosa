@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { apiFetch } from '../services/api';
 import { obtenerCategorias } from '../services/categoryService';
 import { obtenerMarcas } from '../services/brandService';
+import { Link } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 
 export default function Inventario() {
@@ -9,7 +10,7 @@ export default function Inventario() {
   const [categoriasList, setCategoriasList] = useState([]);
   const [marcasList, setMarcasList] = useState([]);
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [formData, setFormData] = useState({ id: null, nombre: '', categoriaId: '', marcaId: '', stock: '', precioCosto: '', precioVenta: '' });
+  const [formData, setFormData] = useState({ id: null, nombre: '', categoriaId: '', marcaId: '', stock: '', precioCosto: '', precioVenta: '', imagenUrl: '' });
   const [verInactivos, setVerInactivos] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -60,10 +61,11 @@ export default function Inventario() {
       setFormData({
         ...producto,
         categoriaId: producto.categoriaId || '',
-        marcaId: producto.marcaId || ''
+        marcaId: producto.marcaId || '',
+        imagenUrl: producto.imagenUrl || ''
       });
     } else {
-      setFormData({ id: null, nombre: '', categoriaId: '', marcaId: '', stock: '', precioCosto: '', precioVenta: '' });
+      setFormData({ id: null, nombre: '', categoriaId: '', marcaId: '', stock: '', precioCosto: '', precioVenta: '', imagenUrl: '' });
     }
     setModalAbierto(true);
   };
@@ -159,6 +161,7 @@ export default function Inventario() {
               Ver Papelera
             </label>
           )}
+          <Link to="/catalogo" className="btn-primary" style={{backgroundColor: '#6c5ce7'}}>📕 Ver Catálogo</Link>
           <button className="btn-primary" onClick={() => abrirModal()}>+ Nuevo Producto</button>
         </div>
       </div>
@@ -255,6 +258,10 @@ export default function Inventario() {
               <div className="form-group">
                 <label>Precio Venta ($)</label>
                 <input type="number" name="precioVenta" value={formData.precioVenta} onChange={handleChange} required min="0" />
+              </div>
+              <div className="form-group">
+                <label>URL de Imagen (Cloudinary)</label>
+                <input type="url" name="imagenUrl" value={formData.imagenUrl} onChange={handleChange} placeholder="https://res.cloudinary.com/..." />
               </div>
               <div className="modal-actions">
                 <button type="button" className="btn-secondary" onClick={cerrarModal}>Cancelar</button>

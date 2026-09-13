@@ -40,6 +40,8 @@ public class Producto {
     private LocalDate fechaVencimiento;
     private String lote;
     private Boolean activo = true;
+    private String imagenUrl;
+
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

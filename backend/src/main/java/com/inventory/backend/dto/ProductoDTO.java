@@ -20,5 +20,6 @@ public record ProductoDTO(
         Integer stockMinimo,
         LocalDate fechaVencimiento,
         String lote,
-        Boolean activo
+        Boolean activo,
+        String imagenUrl
 ) {}

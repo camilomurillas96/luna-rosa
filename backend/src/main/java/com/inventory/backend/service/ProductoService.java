@@ -133,6 +133,7 @@ public class ProductoService {
         p.setFechaVencimiento(dto.fechaVencimiento());
         p.setLote(dto.lote());
         p.setActivo(dto.activo() != null ? dto.activo() : true);
+        p.setImagenUrl(dto.imagenUrl());
 
         if (dto.marcaId() != null) {
             p.setMarca(marcaRepository.findById(dto.marcaId()).orElse(null));
@@ -150,7 +151,7 @@ public class ProductoService {
                 p.getCategoria() != null ? p.getCategoria().getId() : null,
                 p.getCategoria() != null ? p.getCategoria().getNombre() : null,
                 p.getPrecioCosto(), p.getPrecioVenta(), p.getStock(), p.getStockMinimo(),
-                p.getFechaVencimiento(), p.getLote(), p.getActivo()
+                p.getFechaVencimiento(), p.getLote(), p.getActivo(), p.getImagenUrl()
         );
     }
 }
