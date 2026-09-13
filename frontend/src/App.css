@@ -469,11 +469,17 @@ body {
   }
 
   .catalogo-grid {
-    gap: 30px !important;
+    display: block !important;
+    text-align: center;
   }
 
   .catalogo-card { 
-    break-inside: avoid; 
+    page-break-inside: avoid !important;
+    break-inside: avoid !important; 
+    display: inline-block !important;
+    width: 45% !important; /* 2 columnas en movil/impresion */
+    margin: 10px !important;
+    vertical-align: top;
     border: 1px solid #f8c291 !important; /* Dorado suave */
     box-shadow: 0 4px 8px rgba(212, 175, 55, 0.15) !important;
     background-color: #ffffff !important;
