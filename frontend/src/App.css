@@ -456,15 +456,15 @@ body {
   .print-only-header {
     display: block !important;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     border-bottom: 2px solid #d4af37; /* Dorado */
-    padding-bottom: 15px;
+    padding-bottom: 10px;
   }
   
   .print-only-header h1 {
     color: #e84393 !important; /* Rosa fuerte */
     font-family: 'Georgia', serif;
-    font-size: 32px;
+    font-size: 28px;
     margin: 0;
     letter-spacing: 2px;
   }
@@ -472,7 +472,7 @@ body {
   .print-only-header p {
     color: #d4af37 !important; /* Dorado */
     font-style: italic;
-    font-size: 18px;
+    font-size: 16px;
     margin: 5px 0 0 0;
   }
 
@@ -481,12 +481,20 @@ body {
     text-align: center;
   }
 
+  /* Forzar un tamano menor de imagen en PDF para que quepan mas filas */
+  .catalogo-card img,
+  .catalogo-card div {
+    height: 170px !important; 
+    margin-bottom: 5px !important;
+  }
+
   .catalogo-card { 
     page-break-inside: avoid !important;
     break-inside: avoid !important; 
     display: inline-block !important;
     width: 45% !important; /* 2 columnas en movil/impresion */
-    margin: 10px !important;
+    margin: 8px !important;
+    padding: 10px !important;
     vertical-align: top;
     border: 1px solid #f8c291 !important; /* Dorado suave */
     box-shadow: 0 4px 8px rgba(212, 175, 55, 0.15) !important;
@@ -496,11 +504,13 @@ body {
   
   .catalogo-card h4 {
     color: #e84393 !important; /* Rosa fuerte para el titulo */
-    font-size: 18px !important;
+    font-size: 16px !important;
+    margin: 5px 0 !important;
   }
   
   .catalogo-card p {
     color: #d4af37 !important; /* Precio en dorado */
-    font-size: 20px !important;
+    font-size: 18px !important;
+    margin: 5px 0 !important;
   }
 }
