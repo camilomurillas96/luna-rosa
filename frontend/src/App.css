@@ -270,6 +270,8 @@ body {
   border-radius: 8px;
   width: 100%;
   max-width: 500px;
+  max-height: 85vh;
+  overflow-y: auto;
   box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
 
@@ -410,11 +412,17 @@ body {
   }
 
   /* Formularios y Modales */
+  .modal-overlay {
+    align-items: flex-start; /* Evita que el teclado empuje y esconda inputs */
+    padding-top: 20px;
+  }
+  
   .login-form,
   .modal-content {
-    width: 90%;
+    width: 95%;
     max-width: 400px;
-    padding: 20px;
+    padding: 15px;
+    max-height: 80vh; /* scroll mas corto para el teclado */
   }
 
   .form-group input, 
