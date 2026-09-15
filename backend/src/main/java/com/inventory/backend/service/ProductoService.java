@@ -73,6 +73,7 @@ public class ProductoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
         mapearDatosBase(dto, p);
         if (dto.precioVenta() != null) p.setPrecioVenta(dto.precioVenta());
+        if (dto.stock() != null) p.setStock(dto.stock());
         return mapToDTO(productoRepository.save(p));
     }
 
