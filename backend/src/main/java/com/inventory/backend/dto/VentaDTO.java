@@ -8,6 +8,7 @@ public record VentaDTO(
         Long id,
         LocalDateTime fecha,
         BigDecimal total,
+        BigDecimal descuento,
         String clienteNombre,
         String clienteTelefono,
         String metodoPago,

@@ -19,6 +19,9 @@ public class Venta {
     @Column(nullable = false)
     private BigDecimal total;
 
+    @Column(nullable = false)
+    private BigDecimal descuento = BigDecimal.ZERO;
+
     @Column(name = "cliente_nombre")
     private String clienteNombre;
     

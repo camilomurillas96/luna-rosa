@@ -38,6 +38,7 @@ public class VentaService {
         Venta venta = new Venta();
         venta.setFecha(LocalDateTime.now());
         venta.setTotal(dto.total());
+        venta.setDescuento(dto.descuento() != null ? dto.descuento() : java.math.BigDecimal.ZERO);
         venta.setClienteNombre(dto.clienteNombre());
         venta.setClienteTelefono(dto.clienteTelefono());
         venta.setMetodoPago(dto.metodoPago());
@@ -115,6 +116,7 @@ public class VentaService {
                 venta.getId(),
                 venta.getFecha(),
                 venta.getTotal(),
+                venta.getDescuento(),
                 venta.getClienteNombre(),
                 venta.getClienteTelefono(),
                 venta.getMetodoPago(),

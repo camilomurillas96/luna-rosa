@@ -8,6 +8,7 @@ export default function PuntoVenta() {
   const [carrito, setCarrito] = useState([]);
   const [cliente, setCliente] = useState({ nombre: '', telefono: '' });
   const [metodoPago, setMetodoPago] = useState('Efectivo');
+  const [descuento, setDescuento] = useState(0);
   
   useEffect(() => {
     cargarProductos();
@@ -74,7 +75,8 @@ export default function PuntoVenta() {
   };
 
   const calcularTotal = () => {
-    return carrito.reduce((sum, item) => sum + item.subtotal, 0);
+    const subtotal = carrito.reduce((sum, item) => sum + item.subtotal, 0);
+    return Math.max(0, subtotal - (Number(descuento) || 0));
   };
 
   const generarPDF = async () => {
@@ -82,7 +84,7 @@ export default function PuntoVenta() {
       alert('El carrito está vacío.');
       return;
     }
-    await generarComprobantePDF(carrito, cliente, metodoPago, calcularTotal(), true);
+    await generarComprobantePDF(carrito, cliente, metodoPago, calcularTotal(), Number(descuento) || 0, true);
   };
 
   const confirmarVenta = async () => {
@@ -93,6 +95,7 @@ export default function PuntoVenta() {
 
     const ventaData = {
       total: calcularTotal(),
+      descuento: Number(descuento) || 0,
       clienteNombre: cliente.nombre,
       clienteTelefono: cliente.telefono,
       metodoPago: metodoPago,
@@ -184,9 +187,25 @@ export default function PuntoVenta() {
           )}
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '20px', fontWeight: 'bold', borderTop: '2px dashed #ccc', paddingTop: '15px', marginBottom: '20px' }}>
-          <span>Total:</span>
-          <span>${calcularTotal().toLocaleString()}</span>
+        <div style={{ borderTop: '2px dashed #ccc', paddingTop: '15px', marginBottom: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '16px', marginBottom: '10px' }}>
+            <span>Subtotal:</span>
+            <span>${carrito.reduce((sum, item) => sum + item.subtotal, 0).toLocaleString()}</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '16px', marginBottom: '10px', color: '#ff6b81' }}>
+            <span style={{ fontWeight: 'bold' }}>Bono / Descuento ($):</span>
+            <input 
+              type="number" 
+              min="0"
+              value={descuento} 
+              onChange={e => setDescuento(e.target.value)} 
+              style={{ width: '100px', padding: '5px', borderRadius: '4px', border: '1px solid #ff6b81', textAlign: 'right' }} 
+            />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '20px', fontWeight: 'bold' }}>
+            <span>Total a Pagar:</span>
+            <span>${calcularTotal().toLocaleString()}</span>
+          </div>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>

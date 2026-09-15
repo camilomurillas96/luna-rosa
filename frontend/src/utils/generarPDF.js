@@ -2,7 +2,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import logoUrl from '../assets/luna-rosa-.jpeg';
 
-export const generarComprobantePDF = async (detalles, cliente, metodoPago, total, isCotizacion = false, ventaId = null) => {
+export const generarComprobantePDF = async (detalles, cliente, metodoPago, total, descuento = 0, isCotizacion = false, ventaId = null) => {
   if (!detalles || detalles.length === 0) {
     alert('No hay productos para generar el comprobante.');
     return;
@@ -50,8 +50,11 @@ export const generarComprobantePDF = async (detalles, cliente, metodoPago, total
   // Tabla de productos
   const tableColumn = ["Producto", "Cantidad", "Precio Unitario", "Subtotal"];
   const tableRows = [];
+  
+  let subtotalSinDescuento = 0;
 
   detalles.forEach(item => {
+    subtotalSinDescuento += item.subtotal;
     const row = [
       item.productoNombre,
       item.cantidad,
@@ -69,9 +72,23 @@ export const generarComprobantePDF = async (detalles, cliente, metodoPago, total
     headStyles: { fillColor: [255, 105, 180] } // Rosado
   });
 
-  const finalY = doc.lastAutoTable.finalY || 55;
+  let finalY = doc.lastAutoTable.finalY || 55;
+  
+  if (descuento > 0) {
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Subtotal: $${subtotalSinDescuento.toLocaleString()}`, 14, finalY + 10);
+    
+    doc.setFontSize(12);
+    doc.setTextColor(255, 105, 180);
+    doc.text(`Bono / Descuento: -$${descuento.toLocaleString()}`, 14, finalY + 18);
+    
+    finalY += 15;
+  }
+
   doc.setFontSize(14);
-  doc.text(`TOTAL: $${total?.toLocaleString()}`, 14, finalY + 10);
+  doc.setTextColor(0, 0, 0);
+  doc.text(`TOTAL A PAGAR: $${total?.toLocaleString()}`, 14, finalY + 12);
 
   doc.setFontSize(10);
   doc.setTextColor(100, 100, 100);

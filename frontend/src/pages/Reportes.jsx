@@ -87,7 +87,7 @@ export default function Reportes() {
       nombre: venta.clienteNombre,
       telefono: venta.clienteTelefono
     };
-    await generarComprobantePDF(venta.detalles, cliente, venta.metodoPago, venta.total, false, venta.id);
+    await generarComprobantePDF(venta.detalles, cliente, venta.metodoPago, venta.total, venta.descuento || 0, false, venta.id);
   };
 
   return (
